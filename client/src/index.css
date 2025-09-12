@@ -210,6 +210,66 @@
     transform: translateY(-2px);
   }
 
+  /* Ultra-Premium Weather Card */
+  .weather-card-premium {
+    background: linear-gradient(135deg, 
+      hsla(180, 100%, 50%, 0.03) 0%, 
+      hsla(231, 36%, 17%, 0.8) 25%,
+      hsla(240, 15%, 12%, 0.9) 75%,
+      hsla(156, 100%, 55%, 0.03) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsla(255, 255%, 255%, 0.1);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .weather-card-premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.1) 0%, 
+      transparent 50%, 
+      rgba(255, 255, 255, 0.05) 100%);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .weather-card-premium::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle at center,
+      hsla(180, 100%, 50%, 0.05) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+
+  .weather-card-premium:hover {
+    border-color: hsla(180, 100%, 50%, 0.3);
+    box-shadow: 
+      0 25px 50px rgba(0, 0, 0, 0.25),
+      0 0 50px hsla(180, 100%, 50%, 0.1),
+      0 0 100px hsla(156, 100%, 55%, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: translateY(-4px) scale(1.002);
+  }
+
+  .weather-card-premium:hover::after {
+    opacity: 1;
+  }
+
   .news-card {
     background: linear-gradient(135deg, hsla(243, 75%, 66%, 0.1) 0%, hsla(156, 100%, 55%, 0.05) 100%);
     backdrop-filter: blur(12px);

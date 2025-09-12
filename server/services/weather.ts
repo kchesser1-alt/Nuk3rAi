@@ -1,3 +1,13 @@
+export interface DailyForecast {
+  date: string;
+  highTemp: number;
+  lowTemp: number;
+  condition: string;
+  weatherCode: number;
+  uvIndex: number;
+  chanceOfRain: number;
+}
+
 export interface WeatherData {
   location: string;
   temperature: number;
@@ -10,6 +20,7 @@ export interface WeatherData {
   pressure: number;
   uvIndex: number;
   timestamp: string;
+  forecast: DailyForecast[];
 }
 
 // Weather code to description mapping for Open-Meteo API
@@ -66,9 +77,9 @@ export async function getWeatherData(location: string): Promise<WeatherData> {
     
     const { latitude, longitude, name, country } = geoData.results[0];
     
-    // Get weather data using Open-Meteo Forecast API
+    // Get weather data using Open-Meteo Forecast API with imperial units (Fahrenheit) and 7-day forecast
     const weatherResponse = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m,visibility&hourly=uv_index&daily=uv_index_max&timezone=auto&forecast_days=1`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m,visibility&daily=temperature_2m_max,temperature_2m_min,weather_code,uv_index_max,precipitation_probability_max&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=auto&forecast_days=7`
     );
     
     if (!weatherResponse.ok) {
@@ -89,12 +100,21 @@ export async function getWeatherData(location: string): Promise<WeatherData> {
       feelsLike: Math.round(current.apparent_temperature),
       condition: getWeatherCondition(current.weather_code),
       humidity: current.relative_humidity_2m,
-      windSpeed: Math.round(current.wind_speed_10m), // Open-Meteo returns km/h by default
+      windSpeed: Math.round(current.wind_speed_10m), // Open-Meteo returns mph with imperial units
       windDirection,
-      visibility: Math.round(current.visibility / 1000), // Convert m to km
+      visibility: Math.round(current.visibility / 1609.34), // Convert m to miles
       pressure: Math.round(current.surface_pressure),
       uvIndex: Math.round(daily?.uv_index_max?.[0] || 0),
-      timestamp: new Date().toLocaleString()
+      timestamp: new Date().toLocaleString(),
+      forecast: daily?.time?.map((date: string, index: number) => ({
+        date,
+        highTemp: Math.round(daily.temperature_2m_max[index]),
+        lowTemp: Math.round(daily.temperature_2m_min[index]),
+        condition: getWeatherCondition(daily.weather_code[index]),
+        weatherCode: daily.weather_code[index],
+        uvIndex: Math.round(daily.uv_index_max[index] || 0),
+        chanceOfRain: Math.round(daily.precipitation_probability_max[index] || 0)
+      })) || []
     };
   } catch (error) {
     console.error("Weather API error:", error);
