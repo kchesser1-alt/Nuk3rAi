@@ -237,7 +237,7 @@ export default function ChatPage() {
             <div className="flex items-center space-x-4">
               <span>Uncensored Mode: <span className="text-accent">Active</span></span>
               <span>•</span>
-              <span>Model: <span className="text-primary">GPT-5</span></span>
+              <span>Model: <span className="text-primary">GPT-4o</span></span>
             </div>
             <div>
               Press Enter to send, Shift+Enter for new line

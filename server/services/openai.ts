@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-// the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
+// Using GPT-4o which is the latest available OpenAI model
 const openai = new OpenAI({ 
   apiKey: process.env.OPENAI_API_KEY || process.env.VITE_OPENAI_API_KEY || "default_key"
 });
@@ -15,9 +15,9 @@ export async function generateChatResponse(
     };
 
     const response = await openai.chat.completions.create({
-      model: "gpt-5",
+      model: "gpt-4o",
       messages: [systemPrompt, ...messages],
-      max_tokens: 1000,
+      max_completion_tokens: 1000,
       temperature: 0.7,
     });
 
@@ -35,7 +35,7 @@ export async function detectIntent(message: string): Promise<{
 }> {
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-5",
+      model: "gpt-4o",
       messages: [
         {
           role: "system",
