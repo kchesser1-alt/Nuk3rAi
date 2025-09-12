@@ -12,13 +12,46 @@ export interface WeatherData {
   timestamp: string;
 }
 
+// Weather code to description mapping for Open-Meteo API
+const getWeatherCondition = (weatherCode: number): string => {
+  const weatherCodes: { [key: number]: string } = {
+    0: "Clear sky",
+    1: "Mainly clear",
+    2: "Partly cloudy",
+    3: "Overcast",
+    45: "Fog",
+    48: "Depositing rime fog",
+    51: "Light drizzle",
+    53: "Moderate drizzle",
+    55: "Dense drizzle",
+    56: "Light freezing drizzle",
+    57: "Dense freezing drizzle",
+    61: "Slight rain",
+    63: "Moderate rain",
+    65: "Heavy rain",
+    66: "Light freezing rain",
+    67: "Heavy freezing rain",
+    71: "Slight snow fall",
+    73: "Moderate snow fall",
+    75: "Heavy snow fall",
+    77: "Snow grains",
+    80: "Slight rain showers",
+    81: "Moderate rain showers",
+    82: "Violent rain showers",
+    85: "Slight snow showers",
+    86: "Heavy snow showers",
+    95: "Thunderstorm",
+    96: "Thunderstorm with slight hail",
+    99: "Thunderstorm with heavy hail"
+  };
+  return weatherCodes[weatherCode] || "Unknown";
+};
+
 export async function getWeatherData(location: string): Promise<WeatherData> {
-  const apiKey = process.env.OPENWEATHERMAP_API_KEY || process.env.VITE_OPENWEATHERMAP_API_KEY || "default_key";
-  
   try {
-    // Get coordinates from location name
+    // Get coordinates from location name using Open-Meteo Geocoding API
     const geoResponse = await fetch(
-      `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(location)}&limit=1&appid=${apiKey}`
+      `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(location)}&count=1&language=en&format=json`
     );
     
     if (!geoResponse.ok) {
@@ -27,15 +60,15 @@ export async function getWeatherData(location: string): Promise<WeatherData> {
     
     const geoData = await geoResponse.json();
     
-    if (!geoData.length) {
+    if (!geoData.results || !geoData.results.length) {
       throw new Error("Location not found");
     }
     
-    const { lat, lon, name, country } = geoData[0];
+    const { latitude, longitude, name, country } = geoData.results[0];
     
-    // Get weather data
+    // Get weather data using Open-Meteo Forecast API
     const weatherResponse = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m,visibility&hourly=uv_index&daily=uv_index_max&timezone=auto&forecast_days=1`
     );
     
     if (!weatherResponse.ok) {
@@ -43,21 +76,24 @@ export async function getWeatherData(location: string): Promise<WeatherData> {
     }
     
     const weatherData = await weatherResponse.json();
+    const current = weatherData.current;
+    const daily = weatherData.daily;
     
+    // Convert wind direction from degrees to cardinal direction
     const windDirections = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
-    const windDirection = windDirections[Math.round(weatherData.wind?.deg / 22.5) % 16] || 'N';
+    const windDirection = windDirections[Math.round(current.wind_direction_10m / 22.5) % 16] || 'N';
     
     return {
-      location: `${name}, ${country}`,
-      temperature: Math.round(weatherData.main.temp),
-      feelsLike: Math.round(weatherData.main.feels_like),
-      condition: weatherData.weather[0].description,
-      humidity: weatherData.main.humidity,
-      windSpeed: Math.round(weatherData.wind?.speed * 3.6) || 0, // Convert m/s to km/h
+      location: country ? `${name}, ${country}` : name,
+      temperature: Math.round(current.temperature_2m),
+      feelsLike: Math.round(current.apparent_temperature),
+      condition: getWeatherCondition(current.weather_code),
+      humidity: current.relative_humidity_2m,
+      windSpeed: Math.round(current.wind_speed_10m), // Open-Meteo returns km/h by default
       windDirection,
-      visibility: Math.round((weatherData.visibility || 10000) / 1000), // Convert m to km
-      pressure: weatherData.main.pressure,
-      uvIndex: 0, // Would need UV Index API for this
+      visibility: Math.round(current.visibility / 1000), // Convert m to km
+      pressure: Math.round(current.surface_pressure),
+      uvIndex: Math.round(daily?.uv_index_max?.[0] || 0),
       timestamp: new Date().toLocaleString()
     };
   } catch (error) {
