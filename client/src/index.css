@@ -77,35 +77,156 @@
 
 @layer components {
   .neon-border {
-    border: 1px solid hsl(180, 100%, 50%, 0.3);
+    border: 1px solid hsla(180, 100%, 50%, 0.3);
   }
 
   .neon-glow {
-    box-shadow: 0 0 10px hsl(180, 100%, 50%, 0.3);
+    box-shadow: 0 0 10px hsla(180, 100%, 50%, 0.3);
   }
 
   .neon-glow-hover:hover {
-    box-shadow: 0 0 20px hsl(180, 100%, 50%, 0.5), 
-                0 0 30px hsl(180, 100%, 50%, 0.3), 
-                0 0 40px hsl(180, 100%, 50%, 0.2);
+    box-shadow: 0 0 20px hsla(180, 100%, 50%, 0.5), 
+                0 0 30px hsla(180, 100%, 50%, 0.3), 
+                0 0 40px hsla(180, 100%, 50%, 0.2);
   }
 
+  /* Enhanced Avatar Styles */
+  .avatar-enhanced {
+    @apply w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold;
+    @apply transition-all duration-300 cursor-pointer;
+    @apply backdrop-blur-sm;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .avatar-assistant-enhanced {
+    @apply text-primary-foreground;
+    background: linear-gradient(135deg, hsl(180, 100%, 50%) 0%, hsl(180, 100%, 45%) 100%);
+    box-shadow: 0 4px 12px hsla(180, 100%, 50%, 0.2), 
+                0 0 20px hsla(180, 100%, 50%, 0.1);
+  }
+
+  .avatar-assistant-enhanced:hover {
+    @apply scale-105;
+    box-shadow: 0 6px 16px hsla(180, 100%, 50%, 0.3), 
+                0 0 30px hsla(180, 100%, 50%, 0.15);
+  }
+
+  .avatar-user-enhanced {
+    @apply text-secondary-foreground;
+    background: linear-gradient(135deg, hsl(243, 75%, 66%) 0%, hsl(243, 75%, 60%) 100%);
+    box-shadow: 0 4px 12px hsla(243, 75%, 66%, 0.2), 
+                0 0 20px hsla(243, 75%, 66%, 0.1);
+  }
+
+  .avatar-user-enhanced:hover {
+    @apply scale-105;
+    box-shadow: 0 6px 16px hsla(243, 75%, 66%, 0.3), 
+                0 0 30px hsla(243, 75%, 66%, 0.15);
+  }
+
+  /* Enhanced Bubble Styles */
+  .bubble-enhanced {
+    @apply rounded-2xl p-5 transition-all duration-300;
+    @apply backdrop-blur-md;
+    @apply border border-opacity-30;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bubble-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .bubble-assistant {
+    background: linear-gradient(135deg, 
+      hsla(231, 36%, 17%, 0.7) 0%, 
+      hsla(240, 15%, 12%, 0.8) 100%);
+    border-color: hsla(180, 100%, 50%, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 
+                0 0 20px hsla(180, 100%, 50%, 0.1);
+  }
+
+  .bubble-assistant:hover {
+    @apply scale-[1.01];
+    border-color: hsla(180, 100%, 50%, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 
+                0 0 30px hsla(180, 100%, 50%, 0.15);
+  }
+
+  .bubble-user {
+    background: linear-gradient(135deg, 
+      hsla(243, 75%, 66%, 0.15) 0%, 
+      hsla(240, 15%, 12%, 0.7) 100%);
+    border-color: hsla(243, 75%, 66%, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 
+                0 0 20px hsla(243, 75%, 66%, 0.1);
+  }
+
+  .bubble-user:hover {
+    @apply scale-[1.01];
+    border-color: hsla(243, 75%, 66%, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 
+                0 0 30px hsla(243, 75%, 66%, 0.15);
+  }
+
+  /* Enhanced Timestamp */
+  .timestamp-enhanced {
+    @apply text-xs text-muted-foreground mt-2 px-3 py-1;
+    @apply transition-all duration-300 opacity-70;
+    @apply backdrop-blur-sm;
+    @apply rounded-lg inline-block;
+    background: hsla(240, 15%, 8%, 0.3);
+  }
+
+  .timestamp-enhanced:hover {
+    @apply opacity-100;
+  }
+
+  /* Legacy styles for compatibility */
   .message-bubble {
     backdrop-filter: blur(10px);
-    background: hsl(231, 36%, 17%, 0.6);
+    background: hsla(231, 36%, 17%, 0.6);
   }
 
   .weather-card {
-    background: linear-gradient(135deg, hsl(207, 100%, 50%, 0.1) 0%, hsl(180, 100%, 50%, 0.05) 100%);
+    background: linear-gradient(135deg, hsla(207, 100%, 50%, 0.1) 0%, hsla(180, 100%, 50%, 0.05) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsla(180, 100%, 50%, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .weather-card:hover {
+    border-color: hsla(180, 100%, 50%, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 
+                0 0 20px hsla(180, 100%, 50%, 0.1);
+    transform: translateY(-2px);
   }
 
   .news-card {
-    background: linear-gradient(135deg, hsl(243, 75%, 66%, 0.1) 0%, hsl(156, 100%, 55%, 0.05) 100%);
+    background: linear-gradient(135deg, hsla(243, 75%, 66%, 0.1) 0%, hsla(156, 100%, 55%, 0.05) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsla(243, 75%, 66%, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .news-card:hover {
+    border-color: hsla(243, 75%, 66%, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 
+                0 0 20px hsla(243, 75%, 66%, 0.1);
+    transform: translateY(-2px);
   }
 
   .glass-effect {
     backdrop-filter: blur(10px);
-    background: hsl(240, 15%, 8%, 0.5);
+    background: hsla(240, 15%, 8%, 0.5);
   }
 }
 
@@ -128,14 +249,14 @@
 
   @keyframes glow {
     from {
-      box-shadow: 0 0 10px hsl(180, 100%, 50%, 0.3), 
-                  0 0 20px hsl(180, 100%, 50%, 0.2), 
-                  0 0 30px hsl(180, 100%, 50%, 0.1);
+      box-shadow: 0 0 10px hsla(180, 100%, 50%, 0.3), 
+                  0 0 20px hsla(180, 100%, 50%, 0.2), 
+                  0 0 30px hsla(180, 100%, 50%, 0.1);
     }
     to {
-      box-shadow: 0 0 20px hsl(180, 100%, 50%, 0.5), 
-                  0 0 30px hsl(180, 100%, 50%, 0.3), 
-                  0 0 40px hsl(180, 100%, 50%, 0.2);
+      box-shadow: 0 0 20px hsla(180, 100%, 50%, 0.5), 
+                  0 0 30px hsla(180, 100%, 50%, 0.3), 
+                  0 0 40px hsla(180, 100%, 50%, 0.2);
     }
   }
 
