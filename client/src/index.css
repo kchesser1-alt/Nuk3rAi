@@ -1,0 +1,340 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(240, 15%, 4%);
+  --foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 15%, 8%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --popover: hsl(240, 15%, 8%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --primary: hsl(180, 100%, 50%);
+  --primary-foreground: hsl(240, 15%, 4%);
+  --secondary: hsl(243, 75%, 66%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 15%, 12%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  --accent: hsl(156, 100%, 50%);
+  --accent-foreground: hsl(240, 15%, 4%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 15%, 15%);
+  --input: hsl(240, 15%, 15%);
+  --ring: hsl(180, 100%, 50%);
+  --radius: 8px;
+  
+  /* Space colors */
+  --space-900: hsl(240, 15%, 4%);
+  --space-800: hsl(231, 36%, 17%);
+  --space-700: hsl(225, 56%, 16%);
+  
+  /* Neon colors */
+  --neon-cyan: hsl(180, 100%, 50%);
+  --neon-blue: hsl(207, 100%, 50%);
+  --neon-green: hsl(156, 100%, 55%);
+  --neon-purple: hsl(243, 75%, 66%);
+  
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+.dark {
+  --background: hsl(240, 15%, 4%);
+  --foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 15%, 8%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --popover: hsl(240, 15%, 8%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --primary: hsl(180, 100%, 50%);
+  --primary-foreground: hsl(240, 15%, 4%);
+  --secondary: hsl(243, 75%, 66%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 15%, 12%);
+  --muted-foreground: hsl(215, 20%, 65%);
+  --accent: hsl(156, 100%, 50%);
+  --accent-foreground: hsl(240, 15%, 4%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 15%, 15%);
+  --input: hsl(240, 15%, 15%);
+  --ring: hsl(180, 100%, 50%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    background: linear-gradient(135deg, hsl(240, 15%, 4%) 0%, hsl(231, 36%, 17%) 100%);
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .neon-border {
+    border: 1px solid hsla(180, 100%, 50%, 0.3);
+  }
+
+  .neon-glow {
+    box-shadow: 0 0 10px hsla(180, 100%, 50%, 0.3);
+  }
+
+  .neon-glow-hover:hover {
+    box-shadow: 0 0 20px hsla(180, 100%, 50%, 0.5), 
+                0 0 30px hsla(180, 100%, 50%, 0.3), 
+                0 0 40px hsla(180, 100%, 50%, 0.2);
+  }
+
+  /* Enhanced Avatar Styles */
+  .avatar-enhanced {
+    @apply w-10 h-10 rounded-xl flex items-center justify-center text-sm font-semibold;
+    @apply transition-all duration-300 cursor-pointer;
+    @apply backdrop-blur-sm;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .avatar-assistant-enhanced {
+    @apply text-primary-foreground;
+    background: linear-gradient(135deg, hsl(180, 100%, 50%) 0%, hsl(180, 100%, 45%) 100%);
+    box-shadow: 0 4px 12px hsla(180, 100%, 50%, 0.2), 
+                0 0 20px hsla(180, 100%, 50%, 0.1);
+  }
+
+  .avatar-assistant-enhanced:hover {
+    @apply scale-105;
+    box-shadow: 0 6px 16px hsla(180, 100%, 50%, 0.3), 
+                0 0 30px hsla(180, 100%, 50%, 0.15);
+  }
+
+  .avatar-user-enhanced {
+    @apply text-secondary-foreground;
+    background: linear-gradient(135deg, hsl(243, 75%, 66%) 0%, hsl(243, 75%, 60%) 100%);
+    box-shadow: 0 4px 12px hsla(243, 75%, 66%, 0.2), 
+                0 0 20px hsla(243, 75%, 66%, 0.1);
+  }
+
+  .avatar-user-enhanced:hover {
+    @apply scale-105;
+    box-shadow: 0 6px 16px hsla(243, 75%, 66%, 0.3), 
+                0 0 30px hsla(243, 75%, 66%, 0.15);
+  }
+
+  /* Enhanced Bubble Styles */
+  .bubble-enhanced {
+    @apply rounded-2xl p-5 transition-all duration-300;
+    @apply backdrop-blur-md;
+    @apply border border-opacity-30;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bubble-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .bubble-assistant {
+    background: linear-gradient(135deg, 
+      hsla(231, 36%, 17%, 0.7) 0%, 
+      hsla(240, 15%, 12%, 0.8) 100%);
+    border-color: hsla(180, 100%, 50%, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 
+                0 0 20px hsla(180, 100%, 50%, 0.1);
+  }
+
+  .bubble-assistant:hover {
+    @apply scale-[1.01];
+    border-color: hsla(180, 100%, 50%, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 
+                0 0 30px hsla(180, 100%, 50%, 0.15);
+  }
+
+  .bubble-user {
+    background: linear-gradient(135deg, 
+      hsla(243, 75%, 66%, 0.15) 0%, 
+      hsla(240, 15%, 12%, 0.7) 100%);
+    border-color: hsla(243, 75%, 66%, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 
+                0 0 20px hsla(243, 75%, 66%, 0.1);
+  }
+
+  .bubble-user:hover {
+    @apply scale-[1.01];
+    border-color: hsla(243, 75%, 66%, 0.5);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25), 
+                0 0 30px hsla(243, 75%, 66%, 0.15);
+  }
+
+  /* Enhanced Timestamp */
+  .timestamp-enhanced {
+    @apply text-xs text-muted-foreground mt-2 px-3 py-1;
+    @apply transition-all duration-300 opacity-70;
+    @apply backdrop-blur-sm;
+    @apply rounded-lg inline-block;
+    background: hsla(240, 15%, 8%, 0.3);
+  }
+
+  .timestamp-enhanced:hover {
+    @apply opacity-100;
+  }
+
+  /* Legacy styles for compatibility */
+  .message-bubble {
+    backdrop-filter: blur(10px);
+    background: hsla(231, 36%, 17%, 0.6);
+  }
+
+  .weather-card {
+    background: linear-gradient(135deg, hsla(207, 100%, 50%, 0.1) 0%, hsla(180, 100%, 50%, 0.05) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsla(180, 100%, 50%, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .weather-card:hover {
+    border-color: hsla(180, 100%, 50%, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 
+                0 0 20px hsla(180, 100%, 50%, 0.1);
+    transform: translateY(-2px);
+  }
+
+  /* Ultra-Premium Weather Card */
+  .weather-card-premium {
+    background: linear-gradient(135deg, 
+      hsla(180, 100%, 50%, 0.03) 0%, 
+      hsla(231, 36%, 17%, 0.8) 25%,
+      hsla(240, 15%, 12%, 0.9) 75%,
+      hsla(156, 100%, 55%, 0.03) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsla(255, 255%, 255%, 0.1);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .weather-card-premium::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.1) 0%, 
+      transparent 50%, 
+      rgba(255, 255, 255, 0.05) 100%);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .weather-card-premium::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle at center,
+      hsla(180, 100%, 50%, 0.05) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+
+  .weather-card-premium:hover {
+    border-color: hsla(180, 100%, 50%, 0.3);
+    box-shadow: 
+      0 25px 50px rgba(0, 0, 0, 0.25),
+      0 0 50px hsla(180, 100%, 50%, 0.1),
+      0 0 100px hsla(156, 100%, 55%, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: translateY(-4px) scale(1.002);
+  }
+
+  .weather-card-premium:hover::after {
+    opacity: 1;
+  }
+
+  .news-card {
+    background: linear-gradient(135deg, hsla(243, 75%, 66%, 0.1) 0%, hsla(156, 100%, 55%, 0.05) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsla(243, 75%, 66%, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .news-card:hover {
+    border-color: hsla(243, 75%, 66%, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), 
+                0 0 20px hsla(243, 75%, 66%, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .glass-effect {
+    backdrop-filter: blur(10px);
+    background: hsla(240, 15%, 8%, 0.5);
+  }
+}
+
+@layer utilities {
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-typing {
+    animation: typing 1.5s steps(3, end) infinite;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 10px hsla(180, 100%, 50%, 0.3), 
+                  0 0 20px hsla(180, 100%, 50%, 0.2), 
+                  0 0 30px hsla(180, 100%, 50%, 0.1);
+    }
+    to {
+      box-shadow: 0 0 20px hsla(180, 100%, 50%, 0.5), 
+                  0 0 30px hsla(180, 100%, 50%, 0.3), 
+                  0 0 40px hsla(180, 100%, 50%, 0.2);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes typing {
+    0% { content: ''; }
+    33% { content: '.'; }
+    66% { content: '..'; }
+    100% { content: '...'; }
+  }
+}
